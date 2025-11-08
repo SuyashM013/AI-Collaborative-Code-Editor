@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Header = () => {
     return (
-        <header className="flex items-center justify-between bg-opacity-10 backdrop-blur-md rounded-lg z-10 absolute top-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-4xl shadow-lg text-white">
+        <header className="flex items-center justify-between backdrop-blur-sm rounded-lg z-10 absolute top-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-4xl shadow-lg bg-accent/20 text-white">
             
 
             <div>
