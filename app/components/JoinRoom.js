@@ -17,17 +17,7 @@ export default function JoinRoom() {
     const [roomId, setRoomId] = useState("")
     const [username, setUsername] = useState("")
 
-    // function handleRoomSubmit(e) {
-    //     e.preventDefault()
-    //     if (!validate(roomId)) {
-    //         toast.error("Incorrect room ID")
-    //         return
-    //     }
-    //     username && navigate(`/room/${roomId}`, { state: { username } })
-    // }
-
     const handleRoomSubmit = (e) => {
-        e.preventDefault();
 
         if (!validate(roomId)) {
             toast.error("Incorrect room ID");
@@ -37,9 +27,16 @@ export default function JoinRoom() {
         if (username) {
             // Navigate to /room/[roomId] with query params
             router.push(`/room/${roomId}?username=${encodeURIComponent(username)}`);
+            // window.location.href = `/room/${roomId}?username=${encodeURIComponent(username)}`;
         } else {
             toast.error("Please enter your username");
         }
+
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
+
+         e.preventDefault();
     };
 
     function createRoomId(e) {
@@ -114,8 +111,42 @@ export default function JoinRoom() {
 
                 </form>
 
+                {/* <div className="text-white flex flex-col items-center  gap-6 p-8 rounded-xl shadow-2xl drop-shadow-lg shadow-sky-200/40 bg-accent/20 backdrop-blur-sm">
+
+                    <input
+                        className="w-full bg-accent/30 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-700 text-white joinBoxInput"
+                        id="roomIdInput"
+                        type="text"
+                        placeholder="Enter room ID"
+                        required
+                        onChange={(e) => { setRoomId(e.target.value) }}
+                        value={roomId}
+                        autoSave="off"
+                        autoComplete="off"
+                    />
+                    <input
+                        className="w-full bg-accent/30 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-700 text-white joinBoxInput"
+                        id="usernameInput"
+                        type="text"
+                        placeholder="Enter Guest Username"
+                        required
+                        value={username}
+                        onChange={e => { setUsername(e.target.value) }}
+                        autoSave="off"
+                        autoComplete="off"
+                    />
+                    <button onClick={handleRoomSubmit} className="w-1/2 bg-foreground/50 rounded-md px-4 py-2 focus:outline-none focus:ring-2  cursor-pointer hover:bg-foreground/70 " type="submit">Join</button>
+                    <p>Don't have an invite code? Create your <span
+                        style={{ textDecoration: "underline", cursor: "pointer", color: "#a78bfa" }}
+                        onClick={createRoomId}
+                    >own room</span></p>
+
+                </div> */}
+
             </div>
             <Toaster />
+
+            
         </div>
     )
 }

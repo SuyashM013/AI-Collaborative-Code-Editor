@@ -1,76 +1,3 @@
-// // server.js
-// import { createServer } from "http";
-// import { Server } from "socket.io";
-
-// const httpServer = createServer();
-// const io = new Server(httpServer, {
-//     cors: { origin: "*", methods: ["GET", "POST"] },
-//     path: "/socket.io",
-// });
-
-// const socketID_to_Users_Map = {};
-// const roomID_to_Code_Map = {};
-
-// async function getUsersInRoom(roomId) {
-//     const sockets = await io.in(roomId).allSockets();
-//     return Array.from(sockets).map((id) => socketID_to_Users_Map[id]?.username);
-// }
-
-// async function updateUsers(io, socket, roomId) {
-//     const username = socketID_to_Users_Map[socket.id]?.username;
-//     socket.in(roomId).emit("member left", { username });
-//     delete socketID_to_Users_Map[socket.id];
-//     const users = await getUsersInRoom(roomId);
-//     io.to(roomId).emit("updating client list", { userslist: users });
-//     if (!users.length) delete roomID_to_Code_Map[roomId];
-// }
-
-// io.on("connection", (socket) => {
-//     console.log("🔥 Connected:", socket.id);
-
-//     socket.on("when a user joins", async ({ roomId, username }) => {
-//         socketID_to_Users_Map[socket.id] = { username };
-//         socket.join(roomId);
-
-//         // gather latest room data
-//         const users = await getUsersInRoom(roomId);
-//         const data = roomID_to_Code_Map[roomId] || { code: "", languageUsed: "javascript" };
-
-//         // 1️⃣ send full state to this new user
-//         io.to(socket.id).emit("initial sync", {
-//             userslist: users,
-//             code: data.code,
-//             languageUsed: data.languageUsed,
-//         });
-
-//         // 2️⃣ update everyone else's lists
-//         io.to(roomId).emit("updating client list", { userslist: users });
-
-//         // 3️⃣ let others know someone joined
-//         socket.in(roomId).emit("new member joined", { username });
-//     });
-
-
-
-
-//     socket.on("update language", ({ roomId, languageUsed }) => {
-//         roomID_to_Code_Map[roomId] = { ...(roomID_to_Code_Map[roomId] || {}), languageUsed };
-//         socket.in(roomId).emit("on language change", { languageUsed });
-//     });
-
-//     socket.on("update code", ({ roomId, code }) => {
-//         roomID_to_Code_Map[roomId] = { ...(roomID_to_Code_Map[roomId] || {}), code };
-//         socket.in(roomId).emit("on code change", { code });
-//     });
-
-//     socket.on("disconnecting", () => {
-//         socket.rooms.forEach((roomId) => updateUsers(io, socket, roomId));
-//     });
-
-// });
-
-
-// httpServer.listen(5000, () => console.log("✅ Socket.IO running on :5000"));
 
 // server.js
 import express from "express";
@@ -120,52 +47,6 @@ async function updateUserslistAndCodeMap(io, socket, roomId) {
 io.on("connection", (socket) => {
     console.log("🔥 Connected:", socket.id);
 
-    // socket.on("when a user joins", async ({ roomId, username }) => {
-    //     console.log("👤", username, "joined room:", roomId);
-    //     socketID_to_Users_Map[socket.id] = { username };
-    //     socket.join(roomId);
-
-    //     const userslist = await getUsersinRoom(roomId);
-
-    //     // Update users list for everyone
-    //     socket.in(roomId).emit("updating client list", { userslist });
-    //     io.to(socket.id).emit("updating client list", { userslist });
-
-    //     // Send existing code/language to new user
-    //     if (roomID_to_Code_Map[roomId]) {
-    //         const { code, languageUsed } = roomID_to_Code_Map[roomId];
-    //         io.to(socket.id).emit("on code change", { code });
-    //         io.to(socket.id).emit("on language change", { languageUsed });
-    //     }
-
-    //     socket.in(roomId).emit("new member joined", { username });
-    // });
-
-    // socket.on("when a user joins", async ({ roomId, username }) => {
-
-    //     io.to(socket.id).emit("refresh hint");
-
-
-    //     console.log(`👤 ${username} joined room ${roomId}`);
-    //     socketID_to_Users_Map[socket.id] = { username };
-    //     socket.join(roomId);
-
-    //     const userslist = await getUsersinRoom(roomId);
-    //     io.to(roomId).emit("updating client list", { userslist });
-
-    //     const roomData = roomID_to_Code_Map[roomId] || { code: "", languageUsed: "javascript" };
-    //     io.to(socket.id).emit("on code change", { code: roomData.code });
-    //     io.to(socket.id).emit("on language change", { languageUsed: roomData.languageUsed });
-
-
-
-
-    //     socket.in(roomId).emit("new member joined", { username });
-
-    //     // ✅ Send the refresh hint to the user who *just joined*
-
-    // });
-
     socket.on("when a user joins", async ({ roomId, username }) => {
         console.log(`👤 ${username} joined room ${roomId}`);
 
@@ -198,29 +79,6 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("refresh hint");
     });
 
-
-    // socket.on("when a user joins", async ({ roomId, username }) => {
-    //     console.log(`👤 ${username} joined room ${roomId}`);
-
-    //     // 1️⃣ Store and join
-    //     socketID_to_Users_Map[socket.id] = { username };
-    //     socket.join(roomId);
-
-    //     // 2️⃣ Update everyone’s list
-    //     const userslist = await getUsersinRoom(roomId);
-    //     io.to(roomId).emit("updating client list", { userslist });
-
-    //     // 3️⃣ Send code + language to new joiner
-    //     const roomData = roomID_to_Code_Map[roomId] || { code: "", languageUsed: "javascript" };
-    //     io.to(socket.id).emit("on code change", { code: roomData.code });
-    //     io.to(socket.id).emit("on language change", { languageUsed: roomData.languageUsed });
-
-    //     // 4️⃣ Notify others (but not the new one)
-    //     socket.in(roomId).emit("new member joined", { username });
-
-    //     // 5️⃣ Send “refresh hint” only to the new joiner
-    //     io.to(socket.id).emit("refresh hint");
-    // });
 
 
 
@@ -267,6 +125,11 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("cursor move", ({ roomId, username, cursor }) => {
+        socket.in(roomId).emit("cursor update", { username, cursor });
+    });
+
+
 
     socket.on("leave room", async ({ roomId }) => {
         const username = socketID_to_Users_Map[socket.id]?.username;
@@ -281,17 +144,6 @@ io.on("connection", (socket) => {
         console.log(`❌ ${username} left room ${roomId}`);
     });
 
-    // socket.on("disconnecting", () => {
-    //     socket.rooms.forEach((roomId) => {
-    //         if (roomID_to_Code_Map[roomId]) {
-    //             updateUserslistAndCodeMap(io, socket, roomId);
-    //         }
-    //     });
-    // });
-
-    // socket.on("disconnect", () => {
-    //     console.log("❌ Disconnected:", socket.id);
-    // });
 
     socket.on("disconnecting", async () => {
         const joinedRooms = Array.from(socket.rooms).filter((r) => r !== socket.id);
