@@ -26,17 +26,17 @@ export default function JoinRoom() {
 
         if (username) {
             // Navigate to /room/[roomId] with query params
-            router.push(`/room/${roomId}?username=${encodeURIComponent(username)}`);
-            // window.location.href = `/room/${roomId}?username=${encodeURIComponent(username)}`;
+            // router.push(`/room/${roomId}?username=${encodeURIComponent(username)}`);
+            window.location.href = `/room/${roomId}?username=${encodeURIComponent(username)}`;
         } else {
             toast.error("Please enter your username");
         }
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 100);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 100);
 
-         e.preventDefault();
+        e.preventDefault();
     };
 
     function createRoomId(e) {
@@ -54,12 +54,16 @@ export default function JoinRoom() {
             <div className="h-screen w-screen absolute overflow-hidden z-1">
                 <DarkVeil speed={2} warpAmount={1.5} scanlineIntensity={1} />
             </div>
-            <div>
+            <div className="h-screen w-screen md:hidden absolute overflow-hidden z-5 text-white flex items-center justify-center main-font text-4xl ">
+
+                <h1>Try opening in a larger screen</h1>
+            </div>
+            <div className="absolute top-0 left-0 w-full z-15">
                 <Header />
 
             </div>
 
-            <div className="absolute h-screen z-10 w-screen  flex flex-col items-center justify-center">
+            <div className="absolute h-screen z-10 w-screen hidden md:flex flex-col items-center justify-center">
 
                 <div>
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-25 text-center drop-shadow-lg shadow-sky-200/40 secon-font">Join a Coding Room....</h1>
@@ -146,7 +150,7 @@ export default function JoinRoom() {
             </div>
             <Toaster />
 
-            
+
         </div>
     )
 }
