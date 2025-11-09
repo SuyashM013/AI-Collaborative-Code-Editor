@@ -34,12 +34,11 @@ import "ace-builds/src-noconflict/snippets/java";
 import "ace-builds/src-noconflict/snippets/html";
 import "ace-builds/src-noconflict/snippets/css";
 
-// import ace from "ace-builds/src-noconflict/ace";
 ace.config.set("workerPath", "/ace");
 
 
 ace.config.set("useWorker", false);
-ace.config.set("basePath", "/ace"); // ✅ this path will point to /public/ace
+ace.config.set("basePath", "/ace");
 ace.config.set("modePath", "/ace");
 ace.config.set("themePath", "/ace");
 ace.config.set("workerPath", "/ace");
@@ -109,9 +108,6 @@ export default function Room({ socket, roomId, username }) {
     const handleJoin = ({ username }) => toast(`${username} joined`);
     const handleLeave = ({ username }) => toast(`${username} left`);
 
-    socket.on("refresh hint", () => {
-      //  window.location.reload();
-    });
 
     socket.on("cursor update", ({ username: user, cursor }) => {
       if (user === username) return;
@@ -161,7 +157,7 @@ export default function Room({ socket, roomId, username }) {
     return () => selection.off("changeCursor", handleCursorChange);
   }, [socket, roomId, username]);
 
-  // 🧩 Helper to show remote users’ cursors
+  // Helper to show remote users’ cursors
   function updateRemoteCursor(user, cursor) {
     const editor = editorInstanceRef.current;
     if (!editor) return;
@@ -203,10 +199,12 @@ export default function Room({ socket, roomId, username }) {
 
   return (
     <div className="room flex">
-      <div className="roomSidebar p-3 bg-[#1a1a1a] text-white w-60 flex flex-col justify-between">
+
+      <div className="roomSidebar p-5 bg-[#1a1a1a] text-white w-60 flex flex-col justify-between">
+
         <div>
           <select
-            className="w-full p-1 rounded bg-gray-800 mb-2"
+            className="w-full p-2  rounded bg-gray-800 mb-2"
             value={language}
             onChange={handleLanguageChange}
           >
@@ -218,7 +216,7 @@ export default function Room({ socket, roomId, username }) {
           </select>
 
           <select
-            className="w-full p-1 rounded bg-gray-800 mb-2"
+            className="w-full p-2 rounded bg-gray-800 mb-2"
             value={codeKeybinding || "default"}
             onChange={handleCodeKeybindingChange}
           >
@@ -229,10 +227,10 @@ export default function Room({ socket, roomId, username }) {
             ))}
           </select>
 
-          <p>Connected Users:</p>
-          <div className="overflow-y-auto max-h-72">
+          <p className="mt-2">Connected Users:</p>
+          <div className="overflow-y-auto max-h-72 mt-3">
             {fetchedUsers.map((user) => (
-              <div key={user} className="flex items-center gap-2 mb-1">
+              <div key={user} className="flex bg-white/10 max-w-10/12  rounded-2xl items-center gap-2 mb-2 p-1 capitalize">
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center text-xs"
                   style={{ backgroundColor: generateColor(user) }}
@@ -245,15 +243,15 @@ export default function Room({ socket, roomId, username }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 mt-2">
+        <div className="flex flex-col gap-3 mt-2">
           <button
-            className="bg-gray-700 py-1 rounded hover:bg-gray-600"
+            className="bg-gray-700 cursor-pointer py-2 rounded hover:bg-gray-600"
             onClick={() => copyToClipboard(roomId)}
           >
             Copy Room ID
           </button>
           <button
-            className="bg-red-700 py-1 rounded hover:bg-red-600"
+            className="bg-red-700 cursor-pointer py-2 rounded hover:bg-red-600"
             onClick={handleLeave}
           >
             Leave
@@ -269,7 +267,7 @@ export default function Room({ socket, roomId, username }) {
           keyboardHandler={codeKeybinding}
           theme="monokai"
           name="collabEditor"
-          width="100%"
+          width="70%"
           height="100vh"
           value={fetchedCode}
           onChange={onChange}
@@ -280,41 +278,12 @@ export default function Room({ socket, roomId, username }) {
             enableLiveAutocompletion: true,
             highlightActiveLine: true,
             showGutter: true,
-            useWorker: false, // 🚫 disable background syntax workers
+            useWorker: false, 
           }}
 
-          // showPrintMargin
-          // showGutter
-          // highlightActiveLine
-          // enableLiveAutocompletion
-          // enableBasicAutocompletion={false}
-          // enableSnippets={false}
-          // wrapEnabled
-          // tabSize={2}
-          // editorProps={{ $blockScrolling: true }}
         />
       </div>
       <Toaster />
-
-      {/* Cursor CSS
-      <style jsx global>{`
-        .remote-cursor {
-          position: absolute;
-          border-left: 2px solid;
-          animation: blink 1s step-start infinite;
-        }
-        @keyframes blink {
-          50% {
-            border-color: transparent;
-          }
-        }
-        .remote-label {
-          user-select: none;
-          pointer-events: none;
-          white-space: nowrap;
-          box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
-        }
-      `}</style> */}
 
     </div>
   );
