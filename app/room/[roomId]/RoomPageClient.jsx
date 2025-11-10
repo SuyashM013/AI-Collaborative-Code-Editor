@@ -8,7 +8,7 @@ export default function RoomPageClient({ roomId }) {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
 
-  console.log("🧠 Loaded RoomPageClient:", { roomId, username });
+  // console.log("🧠 Loaded RoomPageClient:", { roomId, username });
 
 
   return (

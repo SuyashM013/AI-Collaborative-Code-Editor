@@ -34,26 +34,17 @@ async function getUsersinRoom(roomId) {
     return userslist;
 }
 
-async function updateUserslistAndCodeMap(io, socket, roomId) {
-    const username = socketID_to_Users_Map[socket.id]?.username;
-    if (username) socket.in(roomId).emit("member left", { username });
-
-    delete socketID_to_Users_Map[socket.id];
-    const userslist = await getUsersinRoom(roomId);
-    socket.in(roomId).emit("updating client list", { userslist });
-    if (userslist.length === 0) delete roomID_to_Code_Map[roomId];
-}
 
 io.on("connection", (socket) => {
-    console.log("🔥 Connected:", socket.id);
+    // console.log("🔥 Connected:", socket.id);
 
     socket.on("when a user joins", async ({ roomId, username }) => {
-        console.log(`👤 ${username} joined room ${roomId}`);
+        // console.log(`👤 ${username} joined room ${roomId}`);
 
-        // 1️⃣ Store the username
+        // 1️ Store the username
         socketID_to_Users_Map[socket.id] = { username };
 
-        // 2️⃣ Join the room
+        // 2️ Join the room
         if (socket.rooms.has(roomId)) return;
 
         socket.join(roomId);
@@ -61,21 +52,21 @@ io.on("connection", (socket) => {
         socket.emit("refresh hint");
 
 
-        // 3️⃣ Get the current list of users
+        // 3️ Get the current list of users
         const userslist = await getUsersinRoom(roomId);
 
-        // 4️⃣ Send updated list to everyone in the room (including the new user)
+        // 4️ Send updated list to everyone in the room (including the new user)
         io.to(roomId).emit("updating client list", { userslist });
 
-        // 5️⃣ Send the current code + language to the new user only
+        // 5️ Send the current code + language to the new user only
         const roomData = roomID_to_Code_Map[roomId] || { code: "", languageUsed: "javascript" };
         io.to(socket.id).emit("on code change", { code: roomData.code });
         io.to(socket.id).emit("on language change", { languageUsed: roomData.languageUsed });
 
-        // 6️⃣ Notify others that someone joined
+        // 6️ Notify others that someone joined
         socket.in(roomId).emit("new member joined", { username });
 
-        // 7️⃣ Finally, send refresh hint to the user who joined
+        // 7️ Finally, send refresh hint to the user who joined
         io.to(socket.id).emit("refresh hint");
     });
 
@@ -141,7 +132,7 @@ io.on("connection", (socket) => {
         const userslist = await getUsersinRoom(roomId);
         io.to(roomId).emit("updating client list", { userslist });
         socket.in(roomId).emit("member left", { username });
-        console.log(`❌ ${username} left room ${roomId}`);
+        // console.log(`❌ ${username} left room ${roomId}`);
     });
 
 
@@ -155,12 +146,12 @@ io.on("connection", (socket) => {
             const userslist = await getUsersinRoom(roomId);
             io.to(roomId).emit("updating client list", { userslist });
             socket.in(roomId).emit("member left", { username });
-            console.log(`❌ ${username} disconnected from room ${roomId}`);
+            // console.log(`❌ ${username} disconnected from room ${roomId}`);
         }
     });
 
     socket.on("disconnect", () => {
-        console.log("Socket disconnected:", socket.id);
+        // console.log("Socket disconnected:", socket.id);
     });
 
 

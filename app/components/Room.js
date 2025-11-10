@@ -75,7 +75,7 @@ export default function Room({ socket, roomId, username }) {
 
   function onEditorLoad(editor) {
     editorInstanceRef.current = editor;
-    console.log("✅ Ace editor initialized:", editor);
+    // console.log("✅ Ace editor initialized:", editor);
   }
 
   function onChange(newValue) {
@@ -243,7 +243,7 @@ export default function Room({ socket, roomId, username }) {
 
     // Helper to show remote users’ cursors
     function updateRemoteCursor(user, cursor) {
-      const editor = editorInstanceRef.current;
+      const editor = editorInstanceRef.current?.editor;
       if (!editor) return;
       const session = editor.getSession();
       const Range = ace.require("ace/range").Range;
@@ -314,8 +314,6 @@ export default function Room({ socket, roomId, username }) {
     }, [aiSuggestion, ghostMarkerId]);
 
     // 
-
-
 
     useEffect(() => {
       const editor = editorInstanceRef.current?.editor;
