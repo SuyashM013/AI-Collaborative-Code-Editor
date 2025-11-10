@@ -33,6 +33,7 @@ import "ace-builds/src-noconflict/snippets/golang";
 import "ace-builds/src-noconflict/snippets/java";
 import "ace-builds/src-noconflict/snippets/html";
 import "ace-builds/src-noconflict/snippets/css";
+import CodeReviewer from "./CodeReview";
 
 ace.config.set("workerPath", "/ace");
 
@@ -426,7 +427,7 @@ export default function Room({ socket, roomId, username }) {
             keyboardHandler={codeKeybinding}
             theme="monokai"
             name="collabEditor"
-            width="70%"
+            width="100%"
             height="100vh"
             value={fetchedCode}
             onChange={onChange}
@@ -442,6 +443,8 @@ export default function Room({ socket, roomId, username }) {
 
           />
         </div>
+
+        <CodeReviewer />
         <Toaster />
 
       </div>
