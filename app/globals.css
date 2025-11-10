@@ -53,6 +53,15 @@
 }
 
 
+.ace_marker-layer .ghost-text {
+  color: rgba(200, 200, 200, 0.4);
+  pointer-events: none;
+  font-style: italic;
+}
+
+
+
+
 /* 
 :root {
   --background: #ffffff;
