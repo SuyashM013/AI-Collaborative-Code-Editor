@@ -128,10 +128,8 @@ editor/
 🎨 UI Preview
 Editor View	AI Reviewer Sidebar
 
-	
-
-(Replace with your screenshots after deployment)
-
+![Editor View](./public/ss2.png) 
+![AI Reviewer](./public/ss1.png)
 ---
 
 ## 🌍 Deployment
