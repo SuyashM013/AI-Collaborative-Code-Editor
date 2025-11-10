@@ -104,13 +104,15 @@ Visit → http://localhost:3000
 ---
 
 🧩 Folder Structure
+```
 editor/
 ├── app/
 │   ├── components/
-│   │   ├── Room.jsx
-│   │   ├── SocketWrapper.jsx
+│   │   ├── Room.js
+│   │   ├── SocketWrapper.js
 │   │   ├── CodeReview.jsx
-│   │   └── JoinRoom.jsx
+│   │   ├── JoinRoom.js
+│   │   └── Header.jsx
 │   ├── api/
 │   │   ├── ai/
 │   │   │   ├── suggest/route.js   # AI code suggestion
@@ -118,10 +120,13 @@ editor/
 │   └── room/[roomId]/
 │       ├── page.js
 │       └── RoomPageClient.jsx
-├── utils/
-│   └── index.js                   # Helper for user color generation
-└── server.js                       # Socket.IO backend
+│ 
+├── utils.js  # Helper for user color generation
+│    
+│                
+└── server.js  # Socket.IO backend
 
+```
 
 ---
 
