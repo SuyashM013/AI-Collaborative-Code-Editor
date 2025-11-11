@@ -139,13 +139,9 @@ Editor View	AI Reviewer Sidebar
 
 ## 🌍 Deployment
 
-- Frontend: Deploy on Vercel
+- Frontend: Deploy on Vercel - https://ai-collaborative-code-editor-lac.vercel.app/
 
-- Backend: You can deploy Socket.IO server on Render
-, Railway
-, or any VPS (e.g., EC2)
-
-- Update the WebSocket URL in .env.local for production.
+- Backend: Deployed on Render - https://ai-collaborative-codeeditor.onrender.com
 
 ---
 
