@@ -141,7 +141,7 @@ Editor View	AI Reviewer Sidebar
 
 - Frontend: Deploy on Vercel - https://ai-collaborative-code-editor-lac.vercel.app/
 
-- Backend: Deployed on Render - https://ai-collaborative-codeeditor.onrender.com
+- Backend: Deployed on Render - https://ai-collaborative-codeeditor.onrender.com/
 
 ---
 
