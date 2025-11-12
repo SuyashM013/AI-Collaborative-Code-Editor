@@ -18,6 +18,7 @@ const io = new Server(server, {
 
 app.get("/", (req, res) => {
     res.send("✅ CodeColab Socket.IO Server Running!");
+    console.log("✅ Root endpoint hit");
 });
 
 const socketID_to_Users_Map = {};
